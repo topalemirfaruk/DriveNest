@@ -3,122 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DriveNest - Akıllı Bulut Yönetimi</title>
+    <title>DriveNest - Ultra Modern Bulut Deneyimi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --bg: #0a0a0f;
-            --text: #e8e8f0;
+            --primary-glow: rgba(99, 102, 241, 0.5);
+            --accent: #a855f7;
+            --bg: #030305;
+            --text-main: #ffffff;
+            --text-dim: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            margin: 0;
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            overflow: hidden;
-            text-align: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
-        .hero {
-            position: relative;
-            z-index: 10;
-            padding: 20px;
+
+        /* ── Background Elements ── */
+        .hero-visual {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: url('assets/hero-bg.png') no-repeat center center;
+            background-size: cover;
+            opacity: 0.4;
+            z-index: -1;
+            filter: blur(2px) brightness(0.7);
         }
-        .logo {
-            width: 64px;
-            height: 64px;
-            background: var(--primary);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 800;
-            margin: 0 auto 20px;
-            box-shadow: 0 0 40px rgba(99, 102, 241, 0.4);
-        }
-        h1 {
-            font-size: 3rem;
-            margin: 0;
-            background: linear-gradient(135deg, #fff 0%, #818cf8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        p {
-            font-size: 1.25rem;
-            color: #8888a8;
-            max-width: 600px;
-            margin: 20px auto 40px;
-        }
-        .cta {
-            background: var(--primary);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .cta:hover {
-            background: var(--primary-dark);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
-            transform: translateY(-2px);
-        }
-        .links {
-            margin-top: 60px;
-            display: flex;
-            gap: 24px;
-            font-size: 0.9rem;
-        }
-        .links a {
-            color: #555570;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .links a:hover {
-            color: var(--primary);
-        }
-        .background {
-            position: absolute;
+
+        .gradient-overlay {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0f 100%);
-            z-index: 1;
+            background: radial-gradient(circle at 50% 50%, transparent 0%, var(--bg) 90%);
+            z-index: -1;
         }
-        .glow {
-            position: absolute;
-            width: 400px;
-            height: 400px;
+
+        /* ── Navigation ── */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 10%;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(3, 3, 5, 0.5);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-box {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* ── Hero Section ── */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10%;
+            text-align: center;
+        }
+
+        .badge {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.04em;
+            background: linear-gradient(to bottom, #fff 40%, rgba(255,255,255,0.6));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin-bottom: 48px;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.6);
+        }
+
+        /* ── Features ── */
+        .features {
+            padding: 100px 10%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-8px);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
             background: rgba(99, 102, 241, 0.1);
-            filter: blur(100px);
-            border-radius: 50%;
-            z-index: 2;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            margin-bottom: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        /* ── Footer ── */
+        footer {
+            padding: 80px 10% 40px;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(3, 3, 5, 0.8);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            color: #444;
+            font-size: 0.8rem;
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 20px 5%; }
+            .nav-links { display: none; }
+            h1 { font-size: 3.5rem; }
+            .hero { padding: 0 5%; }
         }
     </style>
 </head>
 <body>
-    <div class="background"></div>
-    <div class="glow" style="top: 10%; right: 20%;"></div>
-    <div class="glow" style="bottom: 10%; left: 20%;"></div>
+    <div class="hero-visual"></div>
+    <div class="gradient-overlay"></div>
 
-    <div class="hero">
-        <div class="logo">DN</div>
-        <h1>DriveNest</h1>
-        <p>Google Drive dosyalarınızı masaüstünden yönetmenin en şık ve hızlı yolu. Güvenli, açık kaynaklı ve tamamen yerel.</p>
-        <a href="#" class="cta">Hemen İndir (v0.1.0)</a>
-        
-        <div class="links">
+    <nav>
+        <div class="logo">
+            <div class="logo-box">DN</div>
+            DriveNest
+        </div>
+        <div class="nav-links">
+            <a href="#features">Özellikler</a>
+            <a href="privacy.html">Gizlilik</a>
+            <a href="terms.html">Şartlar</a>
+            <a href="https://github.com/topalemirfaruk/DriveNest">GitHub</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="badge">Drive Management v0.1.0</div>
+        <h1>Bulutun En Şık<br>Haliyle Tanışın.</h1>
+        <p>DriveNest, Google Drive dosyalarınızı karmaşadan arındırıp, tamamen yerel ve hızlı bir masaüstü deneyimine dönüştürür.</p>
+        <div class="actions">
+            <a href="https://github.com/topalemirfaruk/DriveNest" class="btn btn-primary">Hemen Keşfedin</a>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Işık Hızında Sync</h3>
+            <p>Değişikliklerinizi anında Google Drive ile senkronize edin. Beklemeye son verin.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">💎</div>
+            <h3>Glassmorphism UI</h3>
+            <p>Modern web tasarımının en uç noktası. Şeffaf, derin ve göz alıcı bir arayüz.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>%100 Yerel Güvenlik</h3>
+            <p>Verileriniz asla bizim sunucularımıza uğramaz. Her şey sizin cihazınızda şifrelenir.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
             <a href="privacy.html">Gizlilik Politikası</a>
             <a href="terms.html">Hizmet Şartları</a>
-            <a href="https://github.com/emirft/drivenest">GitHub</a>
+            <a href="#">İletişim</a>
         </div>
-    </div>
+        <p class="copyright">&copy; 2026 DriveNest Open Source Project. All rights reserved.</p>
+    </footer>
 </body>
 </html>
