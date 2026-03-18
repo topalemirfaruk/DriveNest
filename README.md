@@ -1,58 +1,91 @@
-# 🌌 DriveNest
+# 🌌 DriveNest: Akıllı Masaüstü Bulut Yönetimi
 
-**DriveNest**, Google Drive dosyalarınızı modern, hızlı ve şık bir arayüzle masaüstünden yönetmenizi sağlayan açık kaynaklı bir **Electron** uygulamasıdır. 
+**DriveNest**, Google Drive deneyiminizi masaüstüne taşıyan, performans ve estetik odaklı, modern bir **Electron** istemcisidir. Sadece bir dosya yöneticisi değil, aynı zamanda iş akışınızı hızlandıran bir yardımcıdır.
 
-![DriveNest UI Concept](https://raw.githubusercontent.com/topalemirfaruk/DriveNest/main/assets/preview.png) *(Görsel temsilidir)*
+---
 
-## ✨ Özellikler
+## ✨ Öne Çıkan Özellikler
 
-- **Modern Tasarım**: Glassmorphism ve karanlık tema ile premium kullanıcı deneyimi.
-- **Kesintisiz Senkronizasyon**: Google Drive ile hızlı ve güvenilir dosya alışverişi.
-- **Yıldızlı Dosyalar**: Önemli dosyalarınıza tek tıkla erişin.
-- **Gelişmiş Çöp Kutusu**: Dosyaları geri yükleyin veya kalıcı olarak silin.
-- **Izgara ve Liste Görünümü**: Dosyalarınızı dilediğiniz gibi görüntüleyin.
-- **Güvenli Kimlik Doğrulama**: Google OAuth2 ile güvenli giriş ve Keychain/Keytar ile şifrelenmiş token saklama.
+### 🛡️ Güvenli ve Özel
+- **OAuth 2.0 Entegrasyonu**: Verileriniz doğrudan Google üzerinden işlenir.
+- **Keychain/Keytar**: Erişim anahtarlarınız (tokens) sisteminizin en güvenli katmanında şifrelenmiş olarak saklanır.
+- **Veri Gizliliği**: Dosya içerikleriniz hiçbir harici sunucuya iletilmez, her şey sizin cihazınızda kalır.
 
-## 🛠️ Teknolojiler
+### 🎨 Premium Kullanıcı Deneyimi
+- **Modern Glassmorphism**: Saydamlık efektleri ve derinlik katan UI elementleri.
+- **Özel Pencere Tasarımı**: Standart OS çerçevesinden kurtarılmış, uygulamaya özel şık başlık çubuğu (Title Bar).
+- **Dinamik Görünümler**: İhtiyacınıza göre **Izgara (Grid)** veya **Liste (List)** görünümü arasında anlık geçiş.
+- **Gece Modu**: Göz yormayan, kontrastı dengelenmiş derin karanlık tema.
 
-- **Frontend**: React, TypeScript, Tailwind CSS, Lucide Icons
-- **Backend**: Electron, Node.js
-- **Veritabanı**: SQLite (Yerel dosya takibi için)
-- **API**: Google Drive API v3
+### 📂 Gelişmiş Dosya Yönetimi
+- **Akıllı Yıldızlama**: Önemli dosyalarınızı "Yıldızlılar" sekmesinden anında bulun.
+- **Gelişmiş Çöp Kutusu**: Yanlışlıkla silinen dosyaları tek tıkla geri yükleyin veya kalıcı olarak temizleyin.
+- **Hızlı Breadcrumb Navigasyonu**: Klasörler arasında kaybolmadan gezinin.
+- **Anlık Arama**: Google Drive API'sinin gücüyle dosyalarınızı saniyeler içinde filtreleyin.
 
-## 🚀 Başlangıç
+---
 
-### Gereksinimler
+## 🏗️ Teknik Mimari
 
-- Node.js (v18+)
-- npm veya yarn
+DriveNest, modern web teknolojileri ile masaüstü gücünü birleştirir:
 
-### Kurulum
+- **Frontend (Renderer)**: 
+  - **React 18** ile reaktif bileşen yapısı.
+  - **TypeScript** ile tip güvenli kodlama.
+  - **Tailwind CSS** ile özelleştirilmiş, hızlı ve hafif stil yönetimi.
+  - **Lucide Icons** ile tutarlı ikonografi.
 
-1. Depoyu klonlayın:
-   ```bash
-   git clone https://github.com/topalemirfaruk/DriveNest.git
-   cd DriveNest
-   ```
+- **Backend (Main Process)**:
+  - **Electron** ana süreci üzerinden dosya sistemi ve ağ yönetimi.
+  - **IPC (Inter-Process Communication)**: Güvenli ve optimize edilmiş süreçler arası iletişim.
+  - **SQLite**: Dosya meta verilerinin yerel takibi ve hızlı erişim için.
 
-2. Bağımlılıkları yükleyin:
+- **API Katmanı**:
+  - **Google Drive API v3**: Resmî Google kütüphaneleri ile stabil bağlantı.
+
+---
+
+## 🚀 Geliştirici Rehberi
+
+### Kurulum ve Çalıştırma
+
+1. **Bağımlılıkları Yükleyin**:
    ```bash
    npm install
    ```
 
-3. `.env.example` dosyasını `.env` olarak kopyalayın ve Google Cloud Console'dan aldığınız bilgileri doldurun:
+2. **Ortam Değişkenlerini Ayarlayın**:
+   `.env` dosyasını oluşturun ve şunları ekleyin:
    ```env
-   GOOGLE_CLIENT_ID=your_client_id
-   GOOGLE_CLIENT_SECRET=your_client_secret
+   GOOGLE_CLIENT_ID=GCP_Müşteri_Kimliği
+   GOOGLE_CLIENT_SECRET=GCP_Müşteri_Sırrı
    ```
 
-4. Uygulamayı geliştirme modunda çalıştırın:
+3. **Geliştirme Modunda Başlatın**:
    ```bash
    npm run dev
    ```
 
-## 🔐 Google Doğrulama Notu
-Uygulama henüz Google tarafından resmi olarak doğrulanmadığı için giriş yaparken "Google has not verified this app" uyarısı alabilirsiniz. **Gelişmiş (Advanced)** -> **DriveNest'e git (Go to DriveNest)** diyerek güvenle devam edebilirsiniz. Verileriniz sadece yerel cihazınızda işlenir.
+4. **Biçimlendirme ve Kontrol**:
+   ```bash
+   npm run typecheck  # TypeScript kontrolü
+   ```
 
-## 📄 Lisans
-Bu proje MIT lisansı ile lisanslanmıştır.
+---
+
+## 💡 İpuçları ve Çözümler
+
+### Google Verification (Doğrulama) Uyarısı
+Uygulama henüz Google tarafından resmen doğrulanmadığı için giriş yaparken bir uyarı penceresi görebilirsiniz.
+1. "Gelişmiş" (Advanced) butonuna tıklayın.
+2. "DriveNest (güvenli değil) sitesine git" linkine tıklayın.
+Bu durum sadece uygulamanın "geliştirme aşamasında" olduğunu belirtir; verileriniz tamamen güvenli altındadır.
+
+---
+
+## 📄 Lisans ve Katkıda Bulunma
+
+Bu proje **MIT Lisansı** ile korunmaktadır. Katkıda bulunmak isterseniz lütfen bir 'Pull Request' açın veya hata raporu (Issue) bildirin.
+
+---
+*DriveNest — Bulut dosyalarınız, artık daha yakın.*
