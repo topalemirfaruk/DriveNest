@@ -41,6 +41,14 @@ export interface IPCChannels {
   'window:unmaximize': { args: void; result: void };
   'window:close': { args: void; result: void };
   'window:isMaximized': { args: void; result: boolean };
+
+  // Mount
+  'mount:status': { args: void; result: 'unmounted' | 'mounting' | 'mounted' | 'error' };
+  'mount:check': { args: void; result: 'installed' | 'missing' | 'checking' };
+  'mount:install': { args: void; result: void };
+  'mount:start': { args: void; result: void };
+  'mount:stop': { args: void; result: void };
+  'mount:openFolder': { args: void; result: void };
 }
 
 // Event channels (main → renderer, one-way)
@@ -49,6 +57,7 @@ export interface IPCEvents {
   'sync:conflict': { path: string; localModified: number; remoteModified: number };
   'sync:stateChanged': SyncStatus;
   'notification:show': { title: string; body: string; type: 'info' | 'success' | 'error' };
+  'mount:statusChanged': 'unmounted' | 'mounting' | 'mounted' | 'error';
 }
 
 export interface CloudFile {

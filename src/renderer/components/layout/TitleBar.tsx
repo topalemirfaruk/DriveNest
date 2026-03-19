@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Minus, Square, X, Copy } from 'lucide-react';
+// @ts-ignore - Ignore missing type declarations for png imports
+import logoUrl from '../../../../assets/icons/logo.png';
 
 export function TitleBar() {
   const [isMaximized, setIsMaximized] = useState(false);
@@ -32,8 +34,10 @@ export function TitleBar() {
     <div className="titlebar">
       <div className="titlebar__drag">
         <div className="titlebar__logo">
-          <div className="titlebar__logo-icon">DN</div>
-          <span className="titlebar__logo-text">DriveNest</span>
+          <div className="titlebar__logo-icon" style={{ background: 'none', padding: 0, width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img src={logoUrl} alt="DriveNest" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          </div>
+          <span className="titlebar__logo-text" style={{ fontSize: '14px', marginLeft: '4px' }}>DriveNest</span>
         </div>
       </div>
       <div className="titlebar__controls">

@@ -3,6 +3,7 @@ import { shell, ipcMain } from 'electron';
 import keytar from 'keytar';
 import { getDb } from './database';
 import { syncEngine } from './sync-engine';
+import { mountService } from './mount';
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -164,6 +165,9 @@ export function registerAuthHandlers() {
   });
 
   ipcMain.handle('auth:logout', async () => {
+    try {
+      await mountService.unmountDrive();
+    } catch (e) { console.error('Failed to unmount during logout', e); }
     await clearTokens();
     oauth2Client.setCredentials({});
   });

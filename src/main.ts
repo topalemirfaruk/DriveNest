@@ -6,9 +6,17 @@ import os from 'node:os';
 import { initDatabase } from './core/database';
 import { registerAuthHandlers, initAuth, getStoredTokens } from './core/auth';
 import { googleDriveAdapter } from './core/adapters/google-drive';
+import { mountService } from './core/mount';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) app.quit();
+
+app.name = 'DriveNest';
+app.setAppUserModelId('DriveNest');
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
 
 let mainWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
@@ -24,7 +32,7 @@ function createWindow(): void {
     minWidth: 800,
     minHeight: 600,
     title: 'DriveNest',
-    icon: path.join(__dirname, '../../assets/icons/icon.png'),
+    icon: path.join(__dirname, '../../assets/icons/logo.png'),
     backgroundColor: '#0a0a0f',
     titleBarStyle: 'hidden',
     frame: false,
@@ -52,9 +60,9 @@ function createWindow(): void {
     );
   }
 
-  // Open DevTools in development
+  // Open DevTools in development (Disabled per user request)
   if (process.env.NODE_ENV === 'development' || MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
   }
 
   // Minimize to tray instead of closing
@@ -98,8 +106,9 @@ function setupCSP(): void {
 
 // ────────────────────────── System Tray ──────────────────────────
 function createTray(): void {
-  // Create a simple tray icon (16x16 transparent placeholder)
-  const icon = nativeImage.createEmpty();
+  // Load the custom logo for the tray
+  const iconPath = path.join(__dirname, '../../assets/icons/logo.png');
+  const icon = nativeImage.createFromPath(iconPath).resize({ width: 16, height: 16 });
   tray = new Tray(icon);
   tray.setToolTip('DriveNest — Tüm dosyalar güncel');
 
@@ -114,7 +123,11 @@ function createTray(): void {
     { type: 'separator' },
     {
       label: 'Sync Klasörünü Aç',
-      click: () => shell.openPath(SYNC_FOLDER),
+      click: async () => {
+        const fs = await import('node:fs/promises');
+        await fs.mkdir(SYNC_FOLDER, { recursive: true });
+        shell.openPath(SYNC_FOLDER);
+      },
     },
     {
       label: 'Şimdi Senkronize Et',
@@ -322,13 +335,38 @@ function registerIPCHandlers(): void {
   ipcMain.handle('window:isMaximized', () => {
     return mainWindow?.isMaximized() || false;
   });
+
+  // Mount Feature Handlers
+  ipcMain.handle('mount:status', () => mountService.getStatus());
+  ipcMain.handle('mount:check', () => mountService.checkDependencies());
+  ipcMain.handle('mount:install', async () => mountService.installDependencies());
+  ipcMain.handle('mount:start', async () => {
+    await mountService.mountDrive((status) => {
+      mainWindow?.webContents.send('mount:statusChanged', status);
+    });
+  });
+  ipcMain.handle('mount:stop', async () => {
+    await mountService.unmountDrive((status) => {
+      mainWindow?.webContents.send('mount:statusChanged', status);
+    });
+  });
+  ipcMain.handle('mount:openFolder', async () => {
+    const { shell } = await import('electron');
+    shell.openPath(mountService.getMountPath());
+  });
 }
 
 // ────────────────────────── App Lifecycle ──────────────────────────
 app.whenReady().then(async () => {
   Menu.setApplicationMenu(null);
   initDatabase();
-  await initAuth();
+  const isLoggedIn = await initAuth();
+  
+  if (isLoggedIn) {
+     // Automount drive in background
+     mountService.mountDrive().catch(e => console.error('Automount failed:', e));
+  }
+
   setupCSP();
   registerIPCHandlers();
   registerAuthHandlers();
@@ -348,6 +386,23 @@ app.on('activate', () => {
     createWindow();
   } else {
     mainWindow?.show();
+  }
+});
+
+let isQuitting = false;
+app.on('before-quit', async (event) => {
+  if (!isQuitting) {
+    event.preventDefault();
+    isQuitting = true;
+    
+    if (mountService.getStatus() === 'mounted' || mountService.getStatus() === 'mounting') {
+      console.log('Unmounting virtual disk before exit...');
+      try {
+        await mountService.unmountDrive();
+      } catch(e) { console.error('Error during shutdown unmount:', e); }
+    }
+    
+    app.quit();
   }
 });
 

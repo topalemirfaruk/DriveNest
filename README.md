@@ -23,6 +23,12 @@
 - **Hızlı Breadcrumb Navigasyonu**: Klasörler arasında kaybolmadan gezinin.
 - **Anlık Arama**: Google Drive API'sinin gücüyle dosyalarınızı saniyeler içinde filtreleyin.
 
+### 🌐 Sanal Disk (FUSE Mount) - **Özel**
+- **Native Deneyim**: Google Drive'ı işletim sisteminize gerçek bir "Yerel Disk" gibi bağlayın (Dolphin, Nautilus ile uyumlu).
+- **Akıllı VFS Önbellekleme**: Dosyaları açarken gecikme yaşamamanız için gelişmiş önbellekleme ve okuma optimizasyonları.
+- **Tek Tıkla Kurulum**: Gerekli sistem araçlarını (rclone/fuse) otomatik algılayan ve kuran sihirbaz.
+- **Sessiz Automount**: Giriş yapıldığında diski otomatik bağlama ve uygulama kapanırken güvenli ayırma.
+
 ---
 
 ## 🏗️ Teknik Mimari

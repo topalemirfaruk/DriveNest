@@ -9,10 +9,11 @@ const ALLOWED_INVOKE_CHANNELS = new Set<keyof IPCChannels>([
   'sync:start', 'sync:stop', 'sync:status',
   'app:getVersion', 'app:openSyncFolder', 'app:selectFolder', 'app:getStorageQuota', 'app:selectFile', 'app:openExternal', 'app:previewFile', 'app:selectSavePath',
   'window:minimize', 'window:maximize', 'window:unmaximize', 'window:close', 'window:isMaximized',
+  'mount:status', 'mount:check', 'mount:install', 'mount:start', 'mount:stop', 'mount:openFolder',
 ]);
 
 const ALLOWED_EVENT_CHANNELS = new Set<keyof IPCEvents>([
-  'sync:progress', 'sync:conflict', 'sync:stateChanged', 'notification:show',
+  'sync:progress', 'sync:conflict', 'sync:stateChanged', 'notification:show', 'mount:statusChanged',
 ]);
 
 const api: DriveNestAPI = {

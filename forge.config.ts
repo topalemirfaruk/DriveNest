@@ -8,7 +8,7 @@ const config: ForgeConfig = {
   packagerConfig: {
     name: 'DriveNest',
     executableName: 'drivenest',
-    icon: './assets/icons/icon',
+    icon: './assets/icons/logo',
     asar: true,
   },
   makers: [
@@ -17,13 +17,13 @@ const config: ForgeConfig = {
       options: {
         maintainer: 'DriveNest Team',
         homepage: 'https://github.com/drivenest/drivenest',
-        icon: './assets/icons/icon.png',
+        icon: './assets/icons/logo.png',
         categories: ['Network', 'Utility'],
       },
     }),
     new MakerRpm({
       options: {
-        icon: './assets/icons/icon.png',
+        icon: './assets/icons/logo.png',
         categories: ['Network', 'Utility'],
       },
     }),
