@@ -1,16 +1,16 @@
-import { Locale, TranslationDictionary, TranslationKey } from './types';
-import { tr } from './locales/tr';
-import { en } from './locales/en';
-import { es } from './locales/es';
-import { fr } from './locales/fr';
-import { de } from './locales/de';
-import { it } from './locales/it';
-import { pt } from './locales/pt';
-import { ru } from './locales/ru';
-import { zh } from './locales/zh';
-import { ja } from './locales/ja';
-import { ko } from './locales/ko';
-import { ar } from './locales/ar';
+import { Locale, TranslationDictionary, TranslationKey } from './i18n/types';
+import { tr } from './i18n/locales/tr';
+import { en } from './i18n/locales/en';
+import { es } from './i18n/locales/es';
+import { fr } from './i18n/locales/fr';
+import { de } from './i18n/locales/de';
+import { it } from './i18n/locales/it';
+import { pt } from './i18n/locales/pt';
+import { ru } from './i18n/locales/ru';
+import { zh } from './i18n/locales/zh';
+import { ja } from './i18n/locales/ja';
+import { ko } from './i18n/locales/ko';
+import { ar } from './i18n/locales/ar';
 
 const dictionaries: Record<Locale, TranslationDictionary> = {
   tr, en, es, fr, de, it, pt, ru, zh, ja, ko, ar
@@ -39,4 +39,4 @@ export const t = (key: TranslationKey, params?: Record<string, string>) => {
   return text;
 };
 
-export { TranslationKey };
+export type { TranslationKey };
