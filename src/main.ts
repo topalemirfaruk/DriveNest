@@ -32,7 +32,9 @@ function createWindow(): void {
     minWidth: 800,
     minHeight: 600,
     title: 'DriveNest',
-    icon: path.join(__dirname, '../../assets/icons/logo.png'),
+    icon: app.isPackaged 
+      ? path.join(process.resourcesPath, 'assets/icons/logo.png')
+      : path.join(__dirname, '../../assets/icons/logo.png'),
     backgroundColor: '#0a0a0f',
     titleBarStyle: 'hidden',
     frame: false,
@@ -115,7 +117,9 @@ function setupCSP(): void {
 // ────────────────────────── System Tray ──────────────────────────
 function createTray(): void {
   // Load the custom logo for the tray
-  const iconPath = path.join(__dirname, '../../assets/icons/logo.png');
+  const iconPath = app.isPackaged
+    ? path.join(process.resourcesPath, 'assets/icons/logo.png')
+    : path.join(__dirname, '../../assets/icons/logo.png');
   const icon = nativeImage.createFromPath(iconPath).resize({ width: 22, height: 22 });
   tray = new Tray(icon);
   tray.setToolTip('DriveNest — Tüm dosyalar güncel');

@@ -4,6 +4,8 @@
 
 ---
 
+![DriveNest UI](assets/icons/Screenshot_20260320_230800.png)
+
 ## ✨ Features
 
 ### 🛡️ Secure & Private
