@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Minus, Square, X, Copy } from 'lucide-react';
+import { t } from '../../shared/i18n';
 // @ts-ignore - Ignore missing type declarations for png imports
 import logoUrl from '../../../../assets/icons/logo.png';
 
@@ -41,13 +42,13 @@ export function TitleBar() {
         </div>
       </div>
       <div className="titlebar__controls">
-        <button className="titlebar__btn" onClick={handleMinimize} title="Küçült">
+        <button className="titlebar__btn" onClick={handleMinimize} title={t('title.minimize')}>
           <Minus size={14} />
         </button>
-        <button className="titlebar__btn" onClick={handleMaximize} title={isMaximized ? "Aşağı Geri Getir" : "Ekranı Kapla"}>
+        <button className="titlebar__btn" onClick={handleMaximize} title={isMaximized ? t('title.restore') : t('title.maximize')}>
           {isMaximized ? <Copy size={12} /> : <Square size={12} />}
         </button>
-        <button className="titlebar__btn titlebar__btn--close" onClick={handleClose} title="Kapat">
+        <button className="titlebar__btn titlebar__btn--close" onClick={handleClose} title={t('title.close')}>
           <X size={14} />
         </button>
       </div>

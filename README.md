@@ -1,116 +1,118 @@
-# 🌌 DriveNest: Akıllı Masaüstü Bulut Yönetimi
+# 🌌 DriveNest: Intelligent Desktop Cloud Management
 
-**DriveNest**, Google Drive deneyiminizi masaüstüne taşıyan, performans ve estetik odaklı, modern bir **Electron** istemcisidir. Sadece bir dosya yöneticisi değil, aynı zamanda iş akışınızı hızlandıran bir yardımcıdır.
-
----
-
-## ✨ Öne Çıkan Özellikler
-
-### 🛡️ Güvenli ve Özel
-- **OAuth 2.0 Entegrasyonu**: Verileriniz doğrudan Google üzerinden işlenir.
-- **Keychain/Keytar**: Erişim anahtarlarınız (tokens) sisteminizin en güvenli katmanında şifrelenmiş olarak saklanır.
-- **Veri Gizliliği**: Dosya içerikleriniz hiçbir harici sunucuya iletilmez, her şey sizin cihazınızda kalır.
-
-### 🎨 Premium Kullanıcı Deneyimi
-- **Modern Glassmorphism**: Saydamlık efektleri ve derinlik katan UI elementleri.
-- **Özel Pencere Tasarımı**: Standart OS çerçevesinden kurtarılmış, uygulamaya özel şık başlık çubuğu (Title Bar).
-- **Dinamik Görünümler**: İhtiyacınıza göre **Izgara (Grid)** veya **Liste (List)** görünümü arasında anlık geçiş.
-- **Gece Modu**: Göz yormayan, kontrastı dengelenmiş derin karanlık tema.
-
-### 📂 Gelişmiş Dosya Yönetimi
-- **Akıllı Yıldızlama**: Önemli dosyalarınızı "Yıldızlılar" sekmesinden anında bulun.
-- **Gelişmiş Çöp Kutusu**: Yanlışlıkla silinen dosyaları tek tıkla geri yükleyin veya kalıcı olarak temizleyin.
-- **Hızlı Breadcrumb Navigasyonu**: Klasörler arasında kaybolmadan gezinin.
-- **Anlık Arama**: Google Drive API'sinin gücüyle dosyalarınızı saniyeler içinde filtreleyin.
-
-### 🌐 Sanal Disk (FUSE Mount) - **Özel**
-- **Native Deneyim**: Google Drive'ı işletim sisteminize gerçek bir "Yerel Disk" gibi bağlayın (Dolphin, Nautilus ile uyumlu).
-- **Akıllı VFS Önbellekleme**: Dosyaları açarken gecikme yaşamamanız için gelişmiş önbellekleme ve okuma optimizasyonları.
-- **Tek Tıkla Kurulum**: Gerekli sistem araçlarını (rclone/fuse) otomatik algılayan ve kuran sihirbaz.
-- **Sessiz Automount**: Giriş yapıldığında diski otomatik bağlama ve uygulama kapanırken güvenli ayırma.
+**DriveNest** is a modern **Electron** client that brings your Google Drive experience to the desktop, focusing on performance, aesthetics, and a premium user experience. It's not just a file manager; it's a productivity powerhouse designed for Linux users.
 
 ---
 
-## 🏗️ Teknik Mimari
+## ✨ Features
 
-DriveNest, modern web teknolojileri ile masaüstü gücünü birleştirir:
+### 🛡️ Secure & Private
+- **OAuth 2.0 Integration**: Your data is processed directly through Google.
+- **Secure Storage**: Your access tokens are stored securely using system-level encryption.
+- **Data Privacy**: Your file contents are never transmitted to any third-party server; everything stays on your device.
+
+### 🎨 Premium User Experience
+- **Modern Glassmorphism**: Transparency effects and UI elements with depth for a sleek look.
+- **Custom Window Design**: A stylish, custom Title Bar that breaks away from standard OS frames.
+- **Dynamic Views**: Instantly switch between **Grid** and **List** views based on your needs.
+- **Dark Mode**: A carefully balanced, high-contrast deep dark theme.
+
+### 📂 Advanced File Management
+- **Smart Starring**: Find your important files instantly in the "Starred" tab.
+- **Advanced Trash**: Restore accidentally deleted files with one click or clear them permanently.
+- **Quick Breadcrumb Navigation**: Navigate through folders seamlessly.
+- **Instant Search**: Filter your files in seconds using the power of the Google Drive API.
+
+### 🌐 Virtual Drive (FUSE Mount) - **Exclusive**
+- **Native Experience**: Mount Google Drive as a real "Local Disk" on your operating system (Compatible with Dolphin, Nautilus, etc.).
+- **Smart VFS Caching**: Advanced caching and read optimizations for a lag-free experience when opening files.
+- **One-Click Setup**: A wizard that automatically detects and installs necessary system tools (rclone/fuse).
+- **Silent Automount**: Automatically mounts the drive on login and safely unmounts on exit.
+
+---
+
+## 🏗️ Technical Architecture
+
+DriveNest combines modern web technologies with desktop power:
 
 - **Frontend (Renderer)**: 
-  - **React 18** ile reaktif bileşen yapısı.
-  - **TypeScript** ile tip güvenli kodlama.
-  - **Tailwind CSS** ile özelleştirilmiş, hızlı ve hafif stil yönetimi.
-  - **Lucide Icons** ile tutarlı ikonografi.
+  - **React 18** for a reactive component structure.
+  - **TypeScript** for type-safe coding.
+  - **Tailwind CSS** for customized, fast, and lightweight styling.
+  - **Lucide Icons** for consistent iconography.
 
 - **Backend (Main Process)**:
-  - **Electron** ana süreci üzerinden dosya sistemi ve ağ yönetimi.
-  - **IPC (Inter-Process Communication)**: Güvenli ve optimize edilmiş süreçler arası iletişim.
-  - **SQLite**: Dosya meta verilerinin yerel takibi ve hızlı erişim için.
+  - **Electron** main process for file system and network management.
+  - **IPC (Inter-Process Communication)**: Secure and optimized inter-process communication.
+  - **SQLite**: Local tracking of file metadata for rapid access.
 
-- **API Katmanı**:
-  - **Google Drive API v3**: Resmî Google kütüphaneleri ile stabil bağlantı.
+- **API Layer**:
+  - **Google Drive API v3**: Stable connection using official Google libraries.
 
 ---
 
-## 🚀 Geliştirici Rehberi
+## 🚀 Developer Guide
 
-### Kurulum ve Çalıştırma
+### Installation and Running
 
-1. **Bağımlılıkları Yükleyin**:
+1. **Install Dependencies**:
    ```bash
    npm install
    ```
 
-2. **Ortam Değişkenlerini Ayarlayın**:
-   `.env` dosyasını oluşturun ve şunları ekleyin:
+2. **Configure Environment Variables**:
+   Create a `.env` file and add:
    ```env
-   GOOGLE_CLIENT_ID=GCP_Müşteri_Kimliği
-   GOOGLE_CLIENT_SECRET=GCP_Müşteri_Sırrı
+   GOOGLE_CLIENT_ID=YOUR_GCP_CLIENT_ID
+   GOOGLE_CLIENT_SECRET=YOUR_GCP_CLIENT_SECRET
    ```
 
-3. **Geliştirme Modunda Başlatın**:
+3. **Start in Development Mode**:
    ```bash
    npm run dev
    ```
 
-4. **Biçimlendirme ve Kontrol**:
+4. **Type Checking**:
    ```bash
-   npm run typecheck  # TypeScript kontrolü
+   npm run typecheck
    ```
 
 ---
 
-## 💡 İpuçları ve Çözümler
+## 💡 Troubleshooting
 
-### Google Verification (Doğrulama) Uyarısı
-Uygulama henüz Google tarafından resmen doğrulanmadığı için giriş yaparken bir uyarı penceresi görebilirsiniz.
-1. "Gelişmiş" (Advanced) butonuna tıklayın.
-2. "DriveNest (güvenli değil) sitesine git" linkine tıklayın.
-Bu durum sadece uygulamanın "geliştirme aşamasında" olduğunu belirtir; verileriniz tamamen güvenli altındadır.
-
----
+### Google Verification Warning
+Since the app is not yet officially verified by Google, you might see a warning during login.
+1. Click the "Advanced" button.
+2. Click the "Go to DriveNest (unsafe)" link.
+This only indicates the app is in "development mode"; your data remains completely secure.
 
 ---
 
-## 🚀 Gelecek Vizyonu ve Yol Haritası (Roadmap)
+## 🚀 Roadmap
 
-DriveNest sadece bir Google Drive istemcisi değil, tam kapsamlı bir **Multi-Cloud İş İstasyonu** olmayı hedefliyor:
+DriveNest aims to be a full-scale **Multi-Cloud Workstation**:
 
-### 1. 📂 Çoklu Bulut Desteği (Yakında)
-- **Dropbox & OneDrive**: Tüm bulut hesaplarınızı tek bir arayüzden, tek bir sanal disk üzerinden yönetin.
-- **Birleşik Arama**: Tüm bulut servislerinde aynı anda arama yapın.
+### 1. 📂 Multi-Cloud Support (Coming Soon)
+- **Dropbox & OneDrive**: Manage all your cloud accounts from a single interface and a single virtual drive.
+- **Unified Search**: Search across all cloud services simultaneously.
 
-### 🤖 Yapay Zeka (AI) Entegrasyonu
-- **Akıllı Etiketleme**: Yüklenen fotoğrafları AI ile otomatik kategorize etme (doğa, belge, manzara vb.).
-- **Belge Özetleme**: Uzun PDF ve text dosyalarını tek tıkla özetleme.
-
-### 💰 İş Modeli (Büyüme)
-DriveNest topluluk odaklıdır. Temel özellikler her zaman ücretsiz ve açık kaynak kalacak; ileri düzey AI özellikleri ve sınırsız hesap desteği Pro model ile sunulacaktır.
+### 🤖 AI Integration
+- **Smart Tagging**: Automatically categorize uploaded photos using AI (nature, documents, scenery, etc.).
+- **Document Summarization**: Summarize long PDFs and text files with one click.
 
 ---
 
-## 📄 Lisans ve Katkıda Bulunma
+## ⚖️ Legal
 
-Bu proje **MIT Lisansı** ile korunmaktadır. Katkıda bulunmak isterseniz lütfen bir 'Pull Request' açın veya hata raporu (Issue) bildirin.
+- [Privacy Policy](PRIVACY.md)
+- [Terms of Service](TERMS.md)
 
 ---
-*DriveNest — Bulut dosyalarınız, artık daha yakın.*
+
+## 📄 License & Contribution
+
+This project is protected under the **MIT License**. If you wish to contribute, please open a 'Pull Request' or report an issue.
+
+---
+*DriveNest — Your cloud files, closer than ever.*

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Monitor, Loader2 } from 'lucide-react';
 import type { SyncState } from '../../../shared/types/ipc';
+import { t } from '../../shared/i18n';
 
 export function StatusBar() {
   const [syncState, setSyncState] = useState<SyncState>('idle');
@@ -30,11 +31,11 @@ export function StatusBar() {
   }, []);
 
   const stateLabels: Record<SyncState, string> = {
-    idle: 'Tüm dosyalar güncel',
-    syncing: 'Senkronize ediliyor...',
-    paused: 'Duraklatıldı',
-    error: 'Senkronizasyon hatası',
-    offline: 'Çevrimdışı',
+    idle: t('files.status.idle'),
+    syncing: t('files.status.syncing'),
+    paused: t('files.status.paused'),
+    error: t('files.status.error'),
+    offline: t('files.status.offline'),
   };
 
   return (

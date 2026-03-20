@@ -24,6 +24,7 @@ import {
   AlertTriangle,
 } from 'lucide-react';
 import type { NavSection } from '../../App';
+import { t, TranslationKey, getLocale } from '../../shared/i18n';
 
 interface FileExplorerProps {
   activeNav: NavSection;
@@ -57,20 +58,20 @@ const SECTION_ICONS: Record<NavSection, React.ReactNode> = {
   'trash': <Trash2 size={48} />,
 };
 
-const SECTION_TITLES: Record<NavSection, string> = {
-  'my-drive': 'Google Drive\'a Bağlan',
-  'shared': 'Paylaşılanlar',
-  'recent': 'Son Kullanılanlar',
-  'starred': 'Yıldızlılar',
-  'trash': 'Çöp Kutusu',
+const SECTION_TITLES: Record<NavSection, TranslationKey> = {
+  'my-drive': 'files.connect',
+  'shared': 'section.shared.title',
+  'recent': 'section.recent.title',
+  'starred': 'section.starred.title',
+  'trash': 'section.trash.title',
 };
 
-const SECTION_DESCRIPTIONS: Record<NavSection, string> = {
-  'my-drive': 'Google hesabınızla giriş yaparak dosyalarınızı senkronize edin. Tüm dosyalarınız yerel klasörünüzde güvenle saklanacak.',
-  'shared': 'Sizinle paylaşılan dosyalar burada görünecek.',
-  'recent': 'Son eriştiğiniz dosyalar burada görünecek.',
-  'starred': 'Yıldızladığınız önemli dosyalar burada toplanacak.',
-  'trash': 'Silinen dosyalar 30 gün boyunca burada saklanır.',
+const SECTION_DESCRIPTIONS: Record<NavSection, TranslationKey> = {
+  'my-drive': 'section.my-drive.desc',
+  'shared': 'section.shared.desc',
+  'recent': 'section.recent.desc',
+  'starred': 'section.starred.desc',
+  'trash': 'section.trash.desc',
 };
 
 function getFileIcon(mimeType: string) {
@@ -96,7 +97,8 @@ function formatFileSize(bytes?: number): string {
 
 function formatDate(dateStr?: string): string {
   if (!dateStr) return '—';
-  return new Date(dateStr).toLocaleDateString('tr-TR', {
+  const locale = getLocale() === 'tr' ? 'tr-TR' : 'en-US';
+  return new Date(dateStr).toLocaleDateString(locale, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -162,15 +164,15 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
         fileId: file.id, 
         destPath: savePath 
       });
-      alert('Dosya başarıyla indirildi.');
+      alert(t('action.download.success'));
     } catch (err: any) {
       console.error('Download error:', err);
       const errStr = err.toString();
       if (errStr.includes('403') || errStr.includes('401') || errStr.includes('access') || errStr.includes('Unauthorized') || errStr.includes('Credentials')) {
-        alert('⚠️ Oturum Hatası!\n\nYetki yenilemek için giriş ekranına yönlendiriliyorsunuz.');
+        alert(t('action.error.auth'));
         onLogout();
       } else {
-        alert('Dosya indirilirken bir hata oluştu.');
+        alert(t('action.error.download'));
       }
     }
   };
@@ -185,14 +187,14 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
 
   const handleDelete = async (file: DriveFileItem) => {
     if (!window.drivenest) return;
-    if (!confirm(`"${file.name}" dosyasını silmek istediğinize emin misiniz?`)) return;
+    if (!confirm(t('action.confirm-delete', { name: file.name }))) return;
 
     try {
       await window.drivenest.invoke('files:delete', { fileId: file.id });
       onRefresh();
     } catch (err) {
       console.error('Delete failed:', err);
-      alert('Dosya silinirken bir hata oluştu.');
+      alert(t('action.error.delete'));
     }
   };
 
@@ -204,20 +206,20 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
       onRefresh();
     } catch (err) {
       console.error('Restore failed:', err);
-      alert('Dosya geri yüklenirken bir hata oluştu.');
+      alert(t('action.error.restore'));
     }
   };
 
   const handleDeletePermanently = async (file: DriveFileItem) => {
     if (!window.drivenest) return;
-    if (!confirm(`"${file.name}" dosyasını KALICI OLARAK silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`)) return;
+    if (!confirm(t('action.confirm-delete-perm', { name: file.name }))) return;
 
     try {
       await window.drivenest.invoke('files:deletePermanently', { fileId: file.id });
       onRefresh();
     } catch (err) {
       console.error('Permanent delete failed:', err);
-      alert('Dosya kalıcı olarak silinirken bir hata oluştu.');
+      alert(t('action.error.delete'));
     }
   };
 
@@ -239,7 +241,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
       }
     } catch (err) {
       console.error('Toggle star failed:', err);
-      alert('Yıldızlama işlemi sırasında bir hata oluştu.');
+      alert(t('action.error.star'));
     }
   };
 
@@ -251,7 +253,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
           <div className="empty-state__icon">
             <Loader2 size={48} className="spin" />
           </div>
-          <h2 className="empty-state__title">Yükleniyor...</h2>
+          <h2 className="empty-state__title">{t('files.loading')}</h2>
         </div>
       </div>
     );
@@ -265,9 +267,9 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
           <div className="empty-state__icon">
             <Cloud size={48} />
           </div>
-          <h2 className="empty-state__title">Google Drive'a Bağlan</h2>
+          <h2 className="empty-state__title">{t('files.connect')}</h2>
           <p className="empty-state__description">
-            {SECTION_DESCRIPTIONS['my-drive']}
+            {t(SECTION_DESCRIPTIONS['my-drive'])}
           </p>
           <button
             className="empty-state__button"
@@ -277,12 +279,12 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
             {isLoggingIn ? (
               <>
                 <Loader2 size={18} className="spin" style={{ marginRight: '8px' }} />
-                <span>Giriş yapılıyor...</span>
+                <span>{t('files.connecting')}</span>
               </>
             ) : (
               <>
                 <LogIn size={18} style={{ marginRight: '8px' }} />
-                <span>Google ile Giriş Yap</span>
+                <span>{t('files.login.btn')}</span>
               </>
             )}
           </button>
@@ -300,7 +302,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
             <div className="empty-state__icon">
               <Loader2 size={48} className="spin" />
             </div>
-            <h2 className="empty-state__title">Dosyalar yükleniyor...</h2>
+            <h2 className="empty-state__title">{t('files.loading')}</h2>
           </div>
         </div>
       );
@@ -314,10 +316,10 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
               {SECTION_ICONS[activeNav]}
             </div>
             <h2 className="empty-state__title">
-              {activeNav === 'my-drive' ? "Drive'ınız Boş" : SECTION_TITLES[activeNav] + ' Boş'}
+              {activeNav === 'my-drive' ? t('files.empty.title') : t(SECTION_TITLES[activeNav]) + t('section.empty.suffix')}
             </h2>
             <p className="empty-state__description">
-              {SECTION_DESCRIPTIONS[activeNav]}
+              {t(SECTION_DESCRIPTIONS[activeNav])}
             </p>
           </div>
         </div>
@@ -334,9 +336,9 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
         {viewMode === 'list' ? (
           <div className="file-list animate-fade-in">
             <div className="file-list__header">
-              <span className="file-list__col file-list__col--name">Ad</span>
-              <span className="file-list__col file-list__col--modified">Değiştirilme</span>
-              <span className="file-list__col file-list__col--size">Boyut</span>
+              <span className="file-list__col file-list__col--name">{t('files.table.name')}</span>
+              <span className="file-list__col file-list__col--modified">{t('files.table.modified')}</span>
+              <span className="file-list__col file-list__col--size">{t('files.table.size')}</span>
               <span className="file-list__col file-list__col--actions"></span>
             </div>
             {filteredFiles.map((file) => (
@@ -360,7 +362,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
                     {activeNav !== 'trash' && (
                       <button 
                         className={`file-action-btn ${file.starred ? 'file-action-btn--starred' : ''}`} 
-                        title={file.starred ? "Yıldızı Kaldır" : "Yıldızla"}
+                        title={file.starred ? t('action.unstar') : t('action.star')}
                         onClick={async (e) => {
                           e.stopPropagation();
                           handleToggleStar(file);
@@ -372,7 +374,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
                     {activeNav !== 'trash' && (
                       <button 
                         className="file-action-btn" 
-                        title="İndir"
+                        title={t('action.download')}
                         onClick={async (e) => {
                           e.stopPropagation();
                           handleDownload(file);
@@ -385,7 +387,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
                       <>
                         <button 
                           className="file-action-btn" 
-                          title="Geri Yükle"
+                          title={t('action.restore')}
                           onClick={async (e) => {
                             e.stopPropagation();
                             handleRestore(file);
@@ -395,7 +397,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
                         </button>
                         <button 
                           className="file-action-btn file-action-btn--danger" 
-                          title="Kalıcı Olarak Sil"
+                          title={t('action.delete-perm')}
                           onClick={async (e) => {
                             e.stopPropagation();
                             handleDeletePermanently(file);
@@ -407,7 +409,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
                     ) : (
                       <button 
                         className="file-action-btn file-action-btn--danger" 
-                        title="Sil"
+                        title={t('action.delete')}
                         onClick={async (e) => {
                           e.stopPropagation();
                           handleDelete(file);
@@ -436,7 +438,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
                 <div className="file-grid__info">
                   <span className="file-grid__name">{file.name}</span>
                   <span className="file-grid__meta">
-                    {file.mimeType === 'application/vnd.google-apps.folder' ? 'Klasör' : formatFileSize(file.size)}
+                    {file.mimeType === 'application/vnd.google-apps.folder' ? t('files.folder') : formatFileSize(file.size)}
                   </span>
                 </div>
                 
@@ -444,7 +446,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
                   {activeNav !== 'trash' && (
                     <button 
                       className={`file-grid__action ${file.starred ? 'file-grid__action--starred' : ''}`} 
-                      title={file.starred ? "Yıldızı Kaldır" : "Yıldızla"}
+                      title={file.starred ? t('action.unstar') : t('action.star')}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleToggleStar(file);
@@ -456,7 +458,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
                   {activeNav !== 'trash' && (
                     <button 
                       className="file-grid__action" 
-                      title="İndir"
+                      title={t('action.download')}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDownload(file);
@@ -469,7 +471,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
                     <>
                       <button 
                         className="file-grid__action" 
-                        title="Geri Yükle"
+                        title={t('action.restore')}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleRestore(file);
@@ -479,7 +481,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
                       </button>
                       <button 
                         className="file-grid__action file-grid__action--danger" 
-                        title="Kalıcı Olarak Sil"
+                        title={t('action.delete-perm')}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDeletePermanently(file);
@@ -491,7 +493,7 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
                   ) : (
                     <button 
                       className="file-grid__action file-grid__action--danger" 
-                      title="Sil"
+                      title={t('action.delete')}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDelete(file);
@@ -519,9 +521,9 @@ export function FileExplorer({ activeNav, searchQuery, isLoggedIn, isCheckingAut
         <div className="empty-state__icon">
           {SECTION_ICONS[activeNav]}
         </div>
-        <h2 className="empty-state__title">{SECTION_TITLES[activeNav]}</h2>
+        <h2 className="empty-state__title">{t(SECTION_TITLES[activeNav])}</h2>
         <p className="empty-state__description">
-          {SECTION_DESCRIPTIONS[activeNav]}
+          {t(SECTION_DESCRIPTIONS[activeNav])}
         </p>
       </div>
     </div>

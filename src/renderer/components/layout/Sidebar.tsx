@@ -18,6 +18,7 @@ import {
   FolderOpen
 } from 'lucide-react';
 import type { NavSection } from '../../App';
+import { TranslationKey, t } from '../../shared/i18n';
 
 interface SidebarProps {
   activeNav: NavSection;
@@ -36,12 +37,12 @@ interface StorageQuota {
   usageInDrive: string;
 }
 
-const NAV_ITEMS: Array<{ id: NavSection; label: string; icon: React.ReactNode }> = [
-  { id: 'my-drive', label: 'Dosyalarım', icon: <Files size={20} /> },
-  { id: 'shared', label: 'Paylaşılanlar', icon: <Users size={20} /> },
-  { id: 'recent', label: 'Son Kullanılanlar', icon: <Clock size={20} /> },
-  { id: 'starred', label: 'Yıldızlılar', icon: <Star size={20} /> },
-  { id: 'trash', label: 'Çöp Kutusu', icon: <Trash2 size={20} /> },
+const NAV_ITEMS: Array<{ id: NavSection; labelKey: TranslationKey; icon: React.ReactNode }> = [
+  { id: 'my-drive', labelKey: 'nav.my-drive', icon: <Files size={20} /> },
+  { id: 'shared', labelKey: 'nav.shared', icon: <Users size={20} /> },
+  { id: 'recent', labelKey: 'nav.recent', icon: <Clock size={20} /> },
+  { id: 'starred', labelKey: 'nav.starred', icon: <Star size={20} /> },
+  { id: 'trash', labelKey: 'nav.trash', icon: <Trash2 size={20} /> },
 ];
 
 function formatBytes(bytes: string | number): string {
@@ -103,14 +104,14 @@ export function Sidebar({ activeNav, onNavChange, isLoggedIn, userEmail, onLogou
           const newDeps = await window.drivenest.invoke('mount:check');
           setDepStatus(newDeps);
           if (newDeps !== 'installed') {
-             alert('Sistem bağımlılıkları (rclone/fuse) kurulamadı. Lütfen manuel olarak sisteminize kurun.');
+             alert(t('nav.mount.install-error'));
              return;
           }
         }
         await window.drivenest.invoke('mount:start');
       }
     } catch (err: any) {
-      alert(`Sanal disk hatası: ${err.message}`);
+      alert(t('nav.mount.error', { error: err.message }));
     }
   };
 
@@ -126,7 +127,7 @@ export function Sidebar({ activeNav, onNavChange, isLoggedIn, userEmail, onLogou
     <aside className="sidebar">
       {/* Navigation */}
       <nav className="sidebar__nav">
-        <div className="sidebar__section-label">Gezinti</div>
+        <div className="sidebar__section-label">{t('nav.navigation')}</div>
         {NAV_ITEMS.map((item) => (
           <div
             key={item.id}
@@ -134,12 +135,12 @@ export function Sidebar({ activeNav, onNavChange, isLoggedIn, userEmail, onLogou
             onClick={() => onNavChange(item.id)}
           >
             <span className="sidebar__item-icon">{item.icon}</span>
-            <span>{item.label}</span>
+            <span>{t(item.labelKey)}</span>
           </div>
         ))}
 
         <div className="sidebar__section-label" style={{ marginTop: 12 }}>
-          Bulut Servisleri
+          {t('nav.cloud-services')}
         </div>
         <div className="sidebar__item">
           <Cloud className="sidebar__item-icon" size={20} />
@@ -159,10 +160,10 @@ export function Sidebar({ activeNav, onNavChange, isLoggedIn, userEmail, onLogou
                depStatus === 'missing' ? <Download size={20} /> :
                <HardDrive size={20} />}
               <span>
-                {mountStatus === 'mounting' ? 'Bağlanıyor...' : 
-                 mountStatus === 'mounted' ? 'Sanal Diski Ayır' :
-                 depStatus === 'missing' ? 'Sanal Disk Kur (Gerekli)' :
-                 'Sanal Diski Bağla'}
+                {mountStatus === 'mounting' ? t('nav.mount.mounting') : 
+                 mountStatus === 'mounted' ? t('nav.mount.unmount') :
+                 depStatus === 'missing' ? t('nav.mount.install') :
+                 t('nav.mount.mount')}
               </span>
             </div>
             
@@ -173,18 +174,18 @@ export function Sidebar({ activeNav, onNavChange, isLoggedIn, userEmail, onLogou
                 style={{ paddingLeft: '32px', color: 'var(--color-primary)' }}
               >
                 <FolderOpen size={16} />
-                <span>Diski Dosya Yöneticisinde Aç</span>
+                <span>{t('nav.mount.open')}</span>
               </div>
             )}
           </>
         )}
         <div className="sidebar__item" style={{ opacity: 0.4, cursor: 'not-allowed' }}>
           <Box className="sidebar__item-icon" size={18} />
-          <span>Dropbox <small style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)' }}>(yakında)</small></span>
+          <span>Dropbox <small style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)' }}>({t('nav.upcoming')})</small></span>
         </div>
         <div className="sidebar__item" style={{ opacity: 0.4, cursor: 'not-allowed' }}>
           <HardDrive className="sidebar__item-icon" size={18} />
-          <span>OneDrive <small style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)' }}>(yakında)</small></span>
+          <span>OneDrive <small style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)' }}>({t('nav.upcoming')})</small></span>
         </div>
       </nav>
 
@@ -195,16 +196,16 @@ export function Sidebar({ activeNav, onNavChange, isLoggedIn, userEmail, onLogou
             <div className="sidebar__user-info">
               <User size={14} />
               <span className="sidebar__user-email" title={userEmail}>
-                {userEmail || 'Bağlı'}
+                {userEmail || t('auth.connected')}
               </span>
             </div>
-            <button className="sidebar__logout-btn" onClick={onLogout} title="Çıkış Yap">
+            <button className="sidebar__logout-btn" onClick={onLogout} title={t('auth.logout')}>
               <LogOut size={14} />
             </button>
           </div>
         )}
         <div className="sidebar__storage">
-          <div className="sidebar__storage-label">Depolama</div>
+          <div className="sidebar__storage-label">{t('status.storage')}</div>
           <div className="sidebar__storage-bar">
             {quota && (
               <div 
@@ -215,8 +216,8 @@ export function Sidebar({ activeNav, onNavChange, isLoggedIn, userEmail, onLogou
           </div>
           <div className="sidebar__storage-text">
             {quota 
-              ? `${formatBytes(quota.usage)} / ${formatBytes(quota.limit)} kullanılıyor`
-              : 'Giriş yapılmadı'
+              ? t('status.storage.used', { used: formatBytes(quota.usage), total: formatBytes(quota.limit) })
+              : t('status.storage.not-logged-in')
             }
           </div>
         </div>

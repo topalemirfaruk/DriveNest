@@ -4,6 +4,7 @@ import { Header } from './components/layout/Header';
 import { FileExplorer } from './components/files/FileExplorer';
 import { StatusBar } from './components/layout/StatusBar';
 import { TitleBar } from './components/layout/TitleBar';
+import { setLocale, t } from './shared/i18n';
 
 export type NavSection = 'my-drive' | 'shared' | 'recent' | 'starred' | 'trash';
 
@@ -26,6 +27,13 @@ export default function App() {
       setIsCheckingAuth(false);
       return;
     }
+    
+    // Detect locale
+    window.drivenest.invoke('app:getLocale').then(locale => {
+      setLocale(locale);
+      setRefreshTrigger(prev => prev + 1); // Trigger re-render to apply translations
+    });
+
     window.drivenest
       .invoke('auth:status')
       .then((status) => {
@@ -161,19 +169,19 @@ export default function App() {
       {isModalOpen && (
         <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
-            <h3 className="modal__title">Yeni Klasör Oluştur</h3>
+            <h3 className="modal__title">{t('modal.new-folder.title')}</h3>
             <input 
               className="modal__input" 
               type="text" 
-              placeholder="Klasör adı"
+              placeholder={t('modal.new-folder.placeholder')}
               autoFocus
               value={newFolderName}
               onChange={e => setNewFolderName(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && confirmCreateFolder()}
             />
             <div className="modal__actions">
-              <button className="modal__btn modal__btn--cancel" onClick={() => setIsModalOpen(false)}>İptal</button>
-              <button className="modal__btn modal__btn--confirm" onClick={confirmCreateFolder}>Oluştur</button>
+              <button className="modal__btn modal__btn--cancel" onClick={() => setIsModalOpen(false)}>{t('modal.cancel')}</button>
+              <button className="modal__btn modal__btn--confirm" onClick={confirmCreateFolder}>{t('modal.confirm')}</button>
             </div>
           </div>
         </div>

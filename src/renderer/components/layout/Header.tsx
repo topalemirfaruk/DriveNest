@@ -8,6 +8,7 @@ import {
   FolderPlus
 } from 'lucide-react';
 import type { NavSection } from '../../App';
+import { t, TranslationKey } from '../../shared/i18n';
 
 interface HeaderProps {
   activeNav: NavSection;
@@ -21,12 +22,12 @@ interface HeaderProps {
   onNavigateBack: () => void;
 }
 
-const NAV_LABELS: Record<NavSection, string> = {
-  'my-drive': 'Dosyalarım',
-  'shared': 'Paylaşılanlar',
-  'recent': 'Son Kullanılanlar',
-  'starred': 'Yıldızlılar',
-  'trash': 'Çöp Kutusu',
+const NAV_LABELS: Record<NavSection, TranslationKey> = {
+  'my-drive': 'nav.my-drive',
+  'shared': 'nav.shared',
+  'recent': 'nav.recent',
+  'starred': 'nav.starred',
+  'trash': 'nav.trash',
 };
 
 export function Header({ activeNav, searchQuery, onSearchChange, onUpload, onCreateFolder, viewMode, onViewModeChange, folderStack, onNavigateBack }: HeaderProps) {
@@ -39,7 +40,7 @@ export function Header({ activeNav, searchQuery, onSearchChange, onUpload, onCre
           onClick={onNavigateBack}
           style={{ cursor: folderStack.length > 0 ? 'pointer' : 'default' }}
         >
-          {NAV_LABELS[activeNav]}
+          {t(NAV_LABELS[activeNav])}
         </span>
         {folderStack.map((folder) => (
           <React.Fragment key={folder.id}>
@@ -58,7 +59,7 @@ export function Header({ activeNav, searchQuery, onSearchChange, onUpload, onCre
           <input
             className="header__search-input"
             type="text"
-            placeholder="Dosya ara..."
+            placeholder={t('header.search')}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
           />
@@ -66,14 +67,14 @@ export function Header({ activeNav, searchQuery, onSearchChange, onUpload, onCre
 
         <button 
           className={`icon-btn ${viewMode === 'grid' ? 'icon-btn--active' : ''}`} 
-          title="Grid görünüm"
+          title={t('header.view.grid')}
           onClick={() => onViewModeChange('grid')}
         >
           <LayoutGrid size={18} />
         </button>
         <button 
           className={`icon-btn ${viewMode === 'list' ? 'icon-btn--active' : ''}`} 
-          title="Liste görünüm"
+          title={t('header.view.list')}
           onClick={() => onViewModeChange('list')}
         >
           <List size={18} />
@@ -83,14 +84,14 @@ export function Header({ activeNav, searchQuery, onSearchChange, onUpload, onCre
           <>
             <button 
               className="icon-btn" 
-              title="Yeni Klasör"
+              title={t('header.new-folder')}
               onClick={onCreateFolder}
             >
               <FolderPlus size={18} />
             </button>
             <button 
               className="icon-btn icon-btn--accent" 
-              title="Yükle"
+              title={t('header.upload')}
               onClick={onUpload}
             >
               <Plus size={18} />

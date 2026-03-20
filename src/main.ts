@@ -85,18 +85,26 @@ function createWindow(): void {
 // ────────────────────────── CSP Headers ──────────────────────────
 function setupCSP(): void {
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    const isDev = !!MAIN_WINDOW_VITE_DEV_SERVER_URL;
+    const scriptSrc = isDev 
+      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'" 
+      : "script-src 'self'";
+    const defaultSrc = isDev
+      ? "default-src 'self' 'unsafe-inline' 'unsafe-eval'"
+      : "default-src 'self'";
+
     callback({
       responseHeaders: {
         ...details.responseHeaders,
         'Content-Security-Policy': [
           [
-            "default-src 'self'",
-            "script-src 'self'",
+            defaultSrc,
+            scriptSrc,
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' https://fonts.gstatic.com",
             "img-src 'self' data: blob: https://*.googleusercontent.com https://*.google.com",
             "frame-src 'self' blob: https://*.google.com https://accounts.google.com",
-            "connect-src 'self' https://www.googleapis.com https://oauth2.googleapis.com ws://localhost:* http://localhost:*",
+            "connect-src 'self' https://www.googleapis.com https://oauth2.googleapis.com ws://localhost:* http://localhost:* wss://localhost:*",
           ].join('; '),
         ],
       },
@@ -162,6 +170,7 @@ function createTray(): void {
 // ────────────────────────── IPC Handlers ──────────────────────────
 function registerIPCHandlers(): void {
   ipcMain.handle('app:getVersion', () => app.getVersion());
+  ipcMain.handle('app:getLocale', () => app.getLocale());
 
   ipcMain.handle('app:getStorageQuota', async () => {
     const tokens = await getStoredTokens();

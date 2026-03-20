@@ -27,6 +27,7 @@ export interface IPCChannels {
 
   // App
   'app:getVersion': { args: void; result: string };
+  'app:getLocale': { args: void; result: string };
   'app:getStorageQuota': { args: void; result: { limit: string; usage: string; usageInDrive: string } };
   'app:openSyncFolder': { args: void; result: void };
   'app:selectFolder': { args: void; result: string | null };
