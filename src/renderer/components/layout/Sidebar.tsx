@@ -37,11 +37,11 @@ interface StorageQuota {
 }
 
 const NAV_ITEMS: Array<{ id: NavSection; label: string; icon: React.ReactNode }> = [
-  { id: 'my-drive', label: 'Dosyalarım', icon: <Files size={18} /> },
-  { id: 'shared', label: 'Paylaşılanlar', icon: <Users size={18} /> },
-  { id: 'recent', label: 'Son Kullanılanlar', icon: <Clock size={18} /> },
-  { id: 'starred', label: 'Yıldızlılar', icon: <Star size={18} /> },
-  { id: 'trash', label: 'Çöp Kutusu', icon: <Trash2 size={18} /> },
+  { id: 'my-drive', label: 'Dosyalarım', icon: <Files size={20} /> },
+  { id: 'shared', label: 'Paylaşılanlar', icon: <Users size={20} /> },
+  { id: 'recent', label: 'Son Kullanılanlar', icon: <Clock size={20} /> },
+  { id: 'starred', label: 'Yıldızlılar', icon: <Star size={20} /> },
+  { id: 'trash', label: 'Çöp Kutusu', icon: <Trash2 size={20} /> },
 ];
 
 function formatBytes(bytes: string | number): string {
@@ -142,7 +142,7 @@ export function Sidebar({ activeNav, onNavChange, isLoggedIn, userEmail, onLogou
           Bulut Servisleri
         </div>
         <div className="sidebar__item">
-          <Cloud className="sidebar__item-icon" size={18} />
+          <Cloud className="sidebar__item-icon" size={20} />
           <span style={{ flex: 1 }}>Google Drive</span>
         </div>
         
@@ -153,11 +153,11 @@ export function Sidebar({ activeNav, onNavChange, isLoggedIn, userEmail, onLogou
               onClick={handleMountAction}
               style={{ paddingLeft: '28px' }}
             >
-              {mountStatus === 'mounting' ? <RefreshCcw size={18} className="animate-spin" /> : 
-               mountStatus === 'mounted' ? <CheckCircle size={18} color="#10b981" /> :
-               mountStatus === 'error' ? <AlertCircle size={18} color="#ef4444" /> :
-               depStatus === 'missing' ? <Download size={18} /> :
-               <HardDrive size={18} />}
+              {mountStatus === 'mounting' ? <RefreshCcw size={20} className="animate-spin" /> : 
+               mountStatus === 'mounted' ? <CheckCircle size={20} color="#10b981" /> :
+               mountStatus === 'error' ? <AlertCircle size={20} color="#ef4444" /> :
+               depStatus === 'missing' ? <Download size={20} /> :
+               <HardDrive size={20} />}
               <span>
                 {mountStatus === 'mounting' ? 'Bağlanıyor...' : 
                  mountStatus === 'mounted' ? 'Sanal Diski Ayır' :

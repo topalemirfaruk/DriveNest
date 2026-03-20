@@ -90,13 +90,13 @@ function setupCSP(): void {
         ...details.responseHeaders,
         'Content-Security-Policy': [
           [
-            "default-src 'self' 'unsafe-inline' 'unsafe-eval'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+            "default-src 'self'",
+            "script-src 'self'",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' https://fonts.gstatic.com",
             "img-src 'self' data: blob: https://*.googleusercontent.com https://*.google.com",
             "frame-src 'self' blob: https://*.google.com https://accounts.google.com",
-            "connect-src 'self' https://www.googleapis.com https://oauth2.googleapis.com ws://localhost:* wss://localhost:* http://localhost:*",
+            "connect-src 'self' https://www.googleapis.com https://oauth2.googleapis.com ws://localhost:* http://localhost:*",
           ].join('; '),
         ],
       },
@@ -108,7 +108,7 @@ function setupCSP(): void {
 function createTray(): void {
   // Load the custom logo for the tray
   const iconPath = path.join(__dirname, '../../assets/icons/logo.png');
-  const icon = nativeImage.createFromPath(iconPath).resize({ width: 16, height: 16 });
+  const icon = nativeImage.createFromPath(iconPath).resize({ width: 22, height: 22 });
   tray = new Tray(icon);
   tray.setToolTip('DriveNest — Tüm dosyalar güncel');
 
@@ -132,6 +132,14 @@ function createTray(): void {
     {
       label: 'Şimdi Senkronize Et',
       click: () => mainWindow?.webContents.send('sync:stateChanged', { state: 'syncing', filesInQueue: 0 }),
+    },
+    { type: 'separator' },
+    {
+      label: 'Sanal Diski Aç',
+      enabled: mountService.getStatus() === 'mounted',
+      click: () => {
+        shell.openPath(mountService.getMountPath());
+      },
     },
     { type: 'separator' },
     {
@@ -184,11 +192,19 @@ function registerIPCHandlers(): void {
   });
 
   ipcMain.handle('app:openExternal', async (_event, url) => {
+    if (typeof url !== 'string' || !url.startsWith('https://')) {
+      console.warn('Blocked insecure external URL:', url);
+      return;
+    }
     const { shell } = await import('electron');
     await shell.openExternal(url);
   });
 
   ipcMain.handle('app:previewFile', async (_event, url) => {
+    if (typeof url !== 'string' || !url.startsWith('https://')) {
+      console.warn('Blocked insecure preview URL:', url);
+      return;
+    }
     const { BrowserWindow } = await import('electron');
     const previewWin = new BrowserWindow({
       width: 1000,
@@ -198,6 +214,7 @@ function registerIPCHandlers(): void {
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
+        sandbox: true,
         partition: 'persist:google_preview',
       },
     });
@@ -297,6 +314,19 @@ function registerIPCHandlers(): void {
   ipcMain.handle('files:download', async (_event, { fileId, destPath }) => {
     const tokens = await getStoredTokens();
     if (!tokens) throw new Error('Not authenticated');
+
+    // Basic Path Validation: Ensure it's not a hidden system file or sensitive directory
+    const normalizedPath = path.normalize(destPath);
+    const isSystemPath = normalizedPath.startsWith('/etc') || 
+                         normalizedPath.startsWith('/bin') || 
+                         normalizedPath.startsWith('/usr') ||
+                         normalizedPath.startsWith('/root') ||
+                         normalizedPath.includes('/.ssh') ||
+                         normalizedPath.includes('/.bashrc');
+    
+    if (isSystemPath) {
+      throw new Error('Insecure download path blocked.');
+    }
     
     await googleDriveAdapter.downloadFileToPath(fileId, destPath, (percent) => {
       mainWindow?.webContents.send('sync:progress', { 

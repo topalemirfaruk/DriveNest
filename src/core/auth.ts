@@ -91,15 +91,23 @@ export async function initAuth() {
 
 import http from 'node:http';
 import url from 'node:url';
+import crypto from 'node:crypto';
 
 /**
  * Starts a temporary HTTP server to catch the OAuth2 callback.
  */
-function startCallbackServer(): Promise<string> {
+function startCallbackServer(expectedState: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const server = http.createServer(async (req, res) => {
       try {
         const query = url.parse(req.url!, true).query;
+        if (query.state !== expectedState) {
+          res.end('Giriş başarısız: CSRF doğrulaması başarısız oldu.');
+          server.close();
+          reject(new Error('Invalid state parameter (CSRF attempt?)'));
+          return;
+        }
+
         if (query.code) {
           res.end('Giriş başarılı! Bu pencereyi kapatabilirsiniz.');
           server.close();
@@ -120,16 +128,18 @@ function startCallbackServer(): Promise<string> {
  * Starts the OAuth2 login flow.
  */
 export async function login() {
+  const state = crypto.randomBytes(32).toString('hex');
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
-    prompt: 'consent'
+    prompt: 'consent',
+    state: state
   });
 
   shell.openExternal(authUrl);
 
   try {
-    const code = await startCallbackServer();
+    const code = await startCallbackServer(state);
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
     await saveTokens(tokens);

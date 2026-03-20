@@ -89,6 +89,25 @@ Bu durum sadece uygulamanın "geliştirme aşamasında" olduğunu belirtir; veri
 
 ---
 
+---
+
+## 🚀 Gelecek Vizyonu ve Yol Haritası (Roadmap)
+
+DriveNest sadece bir Google Drive istemcisi değil, tam kapsamlı bir **Multi-Cloud İş İstasyonu** olmayı hedefliyor:
+
+### 1. 📂 Çoklu Bulut Desteği (Yakında)
+- **Dropbox & OneDrive**: Tüm bulut hesaplarınızı tek bir arayüzden, tek bir sanal disk üzerinden yönetin.
+- **Birleşik Arama**: Tüm bulut servislerinde aynı anda arama yapın.
+
+### 🤖 Yapay Zeka (AI) Entegrasyonu
+- **Akıllı Etiketleme**: Yüklenen fotoğrafları AI ile otomatik kategorize etme (doğa, belge, manzara vb.).
+- **Belge Özetleme**: Uzun PDF ve text dosyalarını tek tıkla özetleme.
+
+### 💰 İş Modeli (Büyüme)
+DriveNest topluluk odaklıdır. Temel özellikler her zaman ücretsiz ve açık kaynak kalacak; ileri düzey AI özellikleri ve sınırsız hesap desteği Pro model ile sunulacaktır.
+
+---
+
 ## 📄 Lisans ve Katkıda Bulunma
 
 Bu proje **MIT Lisansı** ile korunmaktadır. Katkıda bulunmak isterseniz lütfen bir 'Pull Request' açın veya hata raporu (Issue) bildirin.

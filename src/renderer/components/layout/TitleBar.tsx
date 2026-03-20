@@ -33,11 +33,11 @@ export function TitleBar() {
   return (
     <div className="titlebar">
       <div className="titlebar__drag">
-        <div className="titlebar__logo">
-          <div className="titlebar__logo-icon" style={{ background: 'none', padding: 0, width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img src={logoUrl} alt="DriveNest" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        <div className="titlebar__logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div className="titlebar__logo-icon" style={{ background: 'none', padding: 0, width: '22px', height: '22px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s' }}>
+            <img src={logoUrl} alt="DriveNest" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'drop-shadow(0 0 4px rgba(var(--color-primary-rgb), 0.3))' }} />
           </div>
-          <span className="titlebar__logo-text" style={{ fontSize: '14px', marginLeft: '4px' }}>DriveNest</span>
+          <span className="titlebar__logo-text" style={{ fontSize: '13px', fontWeight: 600, letterSpacing: '0.02em', color: 'rgba(255,255,255,0.9)' }}>DriveNest</span>
         </div>
       </div>
       <div className="titlebar__controls">

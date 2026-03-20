@@ -3,6 +3,7 @@ import { promisify } from 'node:util';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
+import { app } from 'electron';
 import { getStoredTokens } from './auth';
 
 const execAsync = promisify(exec);
@@ -14,7 +15,7 @@ class MountService {
   private mountProcess: ChildProcess | null = null;
   private status: MountStatus = 'unmounted';
   private mountPath = path.join(os.homedir(), 'DriveNest-Mounted');
-  private confPath = path.join(os.tmpdir(), 'drivenest_rclone.conf');
+  private confPath = path.join(app.getPath('userData'), 'rclone_mount.conf');
 
   getStatus(): MountStatus {
     return this.status;
@@ -42,7 +43,10 @@ class MountService {
           apt-get update && apt-get install -y rclone fuse3
         elif command -v dnf >/dev/null 2>&1; then
           dnf install -y rclone fuse3
+        elif command -v zypper >/dev/null 2>&1; then
+          zypper install -y rclone fuse3
         else
+          # Fallback to official rclone install script
           curl https://rclone.org/install.sh | bash
         fi
       `;
