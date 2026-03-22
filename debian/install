@@ -1,0 +1,4 @@
+# Place built files in /usr/lib/drivenest and /usr/bin
+out/drivenest-linux-x64/* /usr/lib/drivenest/
+assets/icons/logo.png /usr/share/icons/hicolor/512x512/apps/drivenest.png
+debian/drivenest.desktop /usr/share/applications/

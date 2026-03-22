@@ -1,0 +1,48 @@
+name: Distribution
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dpkg fakeroot rpm
+          npm install
+
+      - name: Build & Package (Forge)
+        run: npm run make
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+
+      - name: Release to GitHub
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            out/make/**/*.AppImage
+            out/make/**/*.zsync
+            out/make/**/*.deb
+            out/make/**/*.rpm
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push to Cloudsmith
+        run: |
+          pip install --upgrade cloudsmith-cli
+          cloudsmith push deb drivenest-repo/drivenest-repo/any-distro/any-version out/make/deb/x64/*.deb --api-key ${{ secrets.CLOUDSMITH_API_KEY }}

@@ -3,6 +3,7 @@ import { MakerDeb } from '@electron-forge/maker-deb';
 import { MakerRpm } from '@electron-forge/maker-rpm';
 import { MakerZIP } from '@electron-forge/maker-zip';
 import { MakerFlatpak } from '@electron-forge/maker-flatpak';
+import { MakerSnap } from '@electron-forge/maker-snap';
 import { MakerAppImage } from '@reforged/maker-appimage';
 import { VitePlugin } from '@electron-forge/plugin-vite';
 import { AutoUnpackNativesPlugin } from '@electron-forge/plugin-auto-unpack-natives';
@@ -23,6 +24,7 @@ const config: ForgeConfig = {
     new MakerAppImage({
       options: {
         icon: './assets/icons/logo.png',
+        desktopFile: './assets/drivenest.desktop',
       },
     }),
     new MakerDeb({
@@ -57,6 +59,16 @@ const config: ForgeConfig = {
           '--device=dri',
           '--filesystem=home',
         ],
+      },
+    }),
+    new MakerSnap({
+      options: {
+        features: {
+          audio: true,
+          mpris: true,
+          webgl: true,
+        },
+        summary: 'A modern Google Drive client for Linux',
       },
     }),
     new MakerZIP({}, ['linux']),

@@ -33,6 +33,42 @@
 
 ---
 
+## 🚀 Installation & Distribution
+
+DriveNest is available for various Linux distributions. Choose the method that fits your system:
+
+### 🐧 Debian / Ubuntu / Mint (Recommended)
+Our official APT repository provides automatic updates. Run the following command to set it up:
+
+```bash
+# 1. Setup the repository
+curl -1sLf 'https://dl.cloudsmith.io/public/drivenest-repo/drivenest-repo/setup.deb.sh' | sudo -E bash
+
+# 2. Install DriveNest
+sudo apt update && sudo apt install drivenest
+```
+
+### ❄️ Arch Linux / CachyOS (AUR)
+Install from the Arch User Repository using your favorite AUR helper:
+
+```bash
+# Using yay
+yay -S drivenest-bin
+
+# Using paru
+paru -S drivenest-bin
+```
+
+### 📦 Universal AppImage
+Perfect for any Linux distribution.
+1. Download the `.AppImage` and `.AppImage.zsync` files from [Releases](https://github.com/topalemirfaruk/DriveNest/releases).
+2. Make it executable: `chmod +x DriveNest-0.1.0-x64.AppImage`
+3. Launch: `./DriveNest-0.1.0-x64.AppImage`
+
+*Note: Use **AppImageUpdate** for ultra-fast delta updates!*
+
+---
+
 ## 🏗️ Technical Architecture
 
 DriveNest combines modern web technologies with desktop power:

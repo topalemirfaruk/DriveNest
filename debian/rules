@@ -1,0 +1,13 @@
+#!/usr/bin/make -f
+%:
+	dh $@
+
+override_dh_auto_configure:
+	# No configuration needed for pre-built files
+
+override_dh_auto_build:
+	# Building Electron on Launchpad is restricted due to no internet.
+	# We use this as a 'binary' source package or pre-built.
+
+override_dh_auto_test:
+	# Skipping tests on Launchpad

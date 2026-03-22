@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=DriveNest
+Exec=/usr/bin/drivenest
+Icon=drivenest
+Type=Application
+Categories=Network;FileTransfer;
+Terminal=false
+Comment=Modern and beautiful Google Drive client for Linux

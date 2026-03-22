@@ -1,0 +1,19 @@
+pkgbase = drivenest-bin
+	pkgdesc = Modern and beautiful Google Drive client for Linux with VFS support
+	pkgver = 0.1.0
+	pkgrel = 1
+	url = https://github.com/topalemirfaruk/DriveNest
+	arch = x86_64
+	license = MIT
+	depends = fuse2
+	depends = gtk3
+	depends = nss
+	depends = alsa-lib
+	provides = drivenest
+	conflicts = drivenest
+	options = !strip
+	options = !debug
+	source = DriveNest-0.1.0-x64.AppImage::https://github.com/topalemirfaruk/DriveNest/releases/download/v0.1.0/DriveNest-0.1.0-x64.AppImage
+	sha256sums = SKIP
+
+pkgname = drivenest-bin

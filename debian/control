@@ -1,0 +1,14 @@
+Source: drivenest
+Section: utils
+Priority: optional
+Maintainer: topalemirfaruk <topalemirfaruk1@gmail.com>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.5.1
+Homepage: https://github.com/topalemirfaruk/DriveNest
+
+Package: drivenest
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}, fuse2, libnss3, libatk1.0-0, libatk-bridge2.0-0, libcups2, libdrm2, libgtk-3-0, libgbm1, libasound2
+Description: Modern and beautiful Google Drive client for Linux with VFS support
+ DriveNest is a feature-rich desktop client for Google Drive, focusing on
+ native file system integration and a premium user experience.

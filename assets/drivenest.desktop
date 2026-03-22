@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=DriveNest
+GenericName=Google Drive Client
+Comment=A modern Google Drive client for Linux
+Exec=drivenest %U
+Icon=DriveNest
+Categories=Network;FileTransfer;
+MimeType=x-scheme-handler/drivenest;
+X-AppImage-Name=DriveNest
+X-AppImage-Version=0.1.0
+X-AppImage-Arch=x86_64
+X-AppImage-UpdateInformation=gh-releases-zsync|topalemirfaruk|DriveNest|latest|*.AppImage.zsync
+Terminal=false
+StartupNotify=true

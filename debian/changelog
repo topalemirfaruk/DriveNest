@@ -1,0 +1,6 @@
+drivenest (0.1.0-1) unstable; urgency=medium
+
+  * Initial release of DriveNest.
+  * Modern Google Drive client with VFS support.
+
+ -- topalemirfaruk <topalemirfaruk1@gmail.com>  Sun, 22 Mar 2026 18:47:00 +0300
